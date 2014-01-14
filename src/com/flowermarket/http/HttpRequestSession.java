@@ -56,7 +56,7 @@ public class HttpRequestSession {
 				MyLog.responseLog(result);
 				final HttpResponseEntity resp = GsonUtil.getInstance()
 						.getGson().fromJson(result, requestEntity.respCls);
-				if (resp.errorCode == 0) {
+				if (resp.error_code == 0) {
 					if (callback != null) {
 						handler.post(new Runnable() {
 							@Override
@@ -82,7 +82,7 @@ public class HttpRequestSession {
 						public void run() {
 							HttpResponseEntity resp = new HttpResponseEntity();
 							resp.msg = "请求错误";
-							resp.errorCode = -1;
+							resp.error_code = -1;
 							callback.onFailue(statusCode, resp);
 						}
 					});
@@ -98,7 +98,7 @@ public class HttpRequestSession {
 					public void run() {
 						HttpResponseEntity resp = new HttpResponseEntity();
 						resp.msg = "请求错误";
-						resp.errorCode = -1;
+						resp.error_code = -1;
 						callback.onFailue(-1, resp);
 					}
 				});

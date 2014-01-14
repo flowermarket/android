@@ -6,7 +6,6 @@ import com.flowermarket.base.BaseEntity;
 public class User extends BaseEntity {
 
 	public String userName;
-	public String userId;
-	public String uuid;
+	public String uid;
 
 }
