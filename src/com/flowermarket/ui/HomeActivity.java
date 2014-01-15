@@ -13,6 +13,8 @@ public class HomeActivity extends BaseActivity implements OnClickListener {
 
 	private View contact;
 	private View setting;
+	private View plan;
+	private View security;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -25,6 +27,10 @@ public class HomeActivity extends BaseActivity implements OnClickListener {
 		contact.setOnClickListener(this);
 		setting = findViewById(R.id.setting);
 		setting.setOnClickListener(this);
+		plan = findViewById(R.id.plan);
+		plan.setOnClickListener(this);
+		security = findViewById(R.id.security);
+		security.setOnClickListener(this);
 
 	}
 
@@ -35,6 +41,12 @@ public class HomeActivity extends BaseActivity implements OnClickListener {
 			startActivity(intent);
 		} else if (v == setting) {
 			Intent intent = new Intent(this, SettingActivity.class);
+			startActivity(intent);
+		} else if (v == plan) {
+			Intent intent = new Intent(this, PlanListActivity.class);
+			startActivity(intent);
+		} else if (v == security) {
+			Intent intent = new Intent(this, SecurityActivity.class);
 			startActivity(intent);
 		}
 	}

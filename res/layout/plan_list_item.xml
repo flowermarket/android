@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/plan_list_item_bg"
+    android:drawableLeft="@drawable/plan_list_item_icon"
+    android:drawablePadding="10dp"
+    android:drawableRight="@drawable/plan_list_enter"
+    android:gravity="center_vertical"
+    android:paddingLeft="10dp"
+    android:paddingRight="10dp"
+    android:text="广州花市调度系统"
+    android:textColor="#000"
+    android:textSize="18sp" />

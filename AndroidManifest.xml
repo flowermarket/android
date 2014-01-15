@@ -9,6 +9,7 @@
         android:targetSdkVersion="17" />
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.CALL_PHONE"/>
 
     <application
         android:allowBackup="true"
@@ -28,6 +29,9 @@
         <activity android:name=".ui.HomeActivity" android:screenOrientation="portrait" android:launchMode="singleTask"></activity>
         <activity android:name=".ui.ContactListActivity" android:screenOrientation="portrait"></activity>
         <activity android:name=".ui.SettingActivity" android:screenOrientation="portrait"></activity>
+        <activity android:screenOrientation="portrait" android:name=".ui.PlanListActivity"></activity>
+        <activity android:screenOrientation="portrait" android:name=".ui.PlanDetailActivity"></activity>
+        <activity android:screenOrientation="portrait" android:name=".ui.SecurityActivity"></activity>
     </application>
 
 </manifest>
