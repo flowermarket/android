@@ -78,6 +78,7 @@ public class ContactListActivity extends BaseActivity implements
 					@Override
 					public void onSuccess(HttpResponseEntity resp) {
 						progress.dismiss();
+						dividers.clear();
 						BCustomerResponse br = (BCustomerResponse) resp;
 						for (int i = 0; i < br.data.size(); i++) {
 							BCustomer contact = br.data.get(i);
@@ -96,7 +97,8 @@ public class ContactListActivity extends BaseActivity implements
 
 						for (int i = 0; i < br.data.size(); i++) {
 							BCustomer contact = br.data.get(i);
-							if (!dividers.contains(contact.cname.charAt(0))) {
+							if (!dividers.contains(contact.cnamepingyin
+									.charAt(0))) {
 								BCustomer di = new BCustomer();
 								di.cnamepingyin = String
 										.valueOf(contact.cnamepingyin.charAt(0));

@@ -1,5 +1,7 @@
 package com.flowermarket.http;
 
+import java.net.URLDecoder;
+
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
@@ -52,7 +54,8 @@ public class HttpRequestSession {
 			HttpResponse response = client.execute(post);
 			final int statusCode = response.getStatusLine().getStatusCode();
 			if (statusCode == 200) {
-				String result = EntityUtils.toString(response.getEntity());
+				String result = URLDecoder.decode(
+						EntityUtils.toString(response.getEntity()), "utf-8");
 				MyLog.responseLog(result);
 				final HttpResponseEntity resp = GsonUtil.getInstance()
 						.getGson().fromJson(result, requestEntity.respCls);
