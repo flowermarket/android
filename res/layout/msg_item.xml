@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content" >
+
+    <RelativeLayout
+        android:id="@+id/himBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:visibility="gone" >
+
+        <ImageView
+            android:id="@+id/himHead"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/himMsg"
+            android:layout_marginRight="10dp"
+            android:adjustViewBounds="true"
+            android:contentDescription="@null"
+            android:src="@drawable/msg_head_him" />
+
+        <TextView
+            android:id="@+id/himTime"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/himHead"
+            android:paddingLeft="10dp"
+            android:textColor="#2d3d4d"
+            android:textSize="12sp" />
+
+        <TextView
+            android:id="@+id/himMsg"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/himTime"
+            android:layout_toRightOf="@+id/himHead"
+            android:background="@drawable/msg_bg_him"
+            android:gravity="center_vertical"
+            android:paddingLeft="20dp"
+            android:textColor="#2d3d4d"
+            android:textSize="16sp" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/meBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp" >
+
+        <ImageView
+            android:id="@+id/meHead"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/meMsg"
+            android:layout_alignParentRight="true"
+            android:layout_marginLeft="10dp"
+            android:adjustViewBounds="true"
+            android:contentDescription="@null"
+            android:src="@drawable/msg_head_me" />
+
+        <TextView
+            android:id="@+id/meTime"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_toLeftOf="@+id/meHead"
+            android:gravity="right"
+            android:paddingRight="10dp"
+            android:textColor="#2d3d4d"
+            android:textSize="12sp" />
+
+        <TextView
+            android:id="@+id/meMsg"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/meTime"
+            android:layout_toLeftOf="@+id/meHead"
+            android:background="@drawable/msg_bg_me"
+            android:gravity="center_vertical|right"
+            android:paddingRight="20dp"
+            android:textColor="#2d3d4d"
+            android:textSize="16sp" />
+    </RelativeLayout>
+
+</FrameLayout>

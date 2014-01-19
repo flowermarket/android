@@ -15,6 +15,8 @@ public class HomeActivity extends BaseActivity implements OnClickListener {
 	private View setting;
 	private View plan;
 	private View security;
+	private View message;
+	private View map;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +33,10 @@ public class HomeActivity extends BaseActivity implements OnClickListener {
 		plan.setOnClickListener(this);
 		security = findViewById(R.id.security);
 		security.setOnClickListener(this);
+		message = findViewById(R.id.message);
+		message.setOnClickListener(this);
+		map = findViewById(R.id.map);
+		map.setOnClickListener(this);
 
 	}
 
@@ -47,6 +53,9 @@ public class HomeActivity extends BaseActivity implements OnClickListener {
 			startActivity(intent);
 		} else if (v == security) {
 			Intent intent = new Intent(this, SecurityActivity.class);
+			startActivity(intent);
+		} else if (v == map) {
+			Intent intent = new Intent(this, FlowerMapActivity.class);
 			startActivity(intent);
 		}
 	}

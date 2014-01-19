@@ -13,6 +13,9 @@ public class FlowerMarketApplication extends Application {
 	@Override
 	public void onCreate() {
 		super.onCreate();
+		user = new User();
+		user.uid = "130";
+		user.userName = "哈哈哈";
 	}
 
 }
