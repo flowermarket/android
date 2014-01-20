@@ -19,6 +19,7 @@ import com.flowermarket.http.HttpRequestSession;
 import com.flowermarket.http.HttpRequestSession.OnRequestCallback;
 import com.flowermarket.http.base.HttpRequestEntity;
 import com.flowermarket.http.base.HttpResponseEntity;
+import com.flowermarket.services.MessageServices;
 import com.flowermarket.utils.CacheUtil;
 import com.flowermarket.utils.Tools;
 
@@ -105,6 +106,10 @@ public class LoginActivity extends BaseActivity implements OnClickListener,
 					public void onSuccess(HttpResponseEntity resp) {
 						dialog.dismiss();
 						FlowerMarketApplication.user = ((UserLoginResponse) resp).data;
+						// 启动消息服务
+						Intent service = new Intent(getApplicationContext(),
+								MessageServices.class);
+						startService(service);
 						if (remember.isChecked()) {
 							CacheUtil.getInstance(getApplicationContext()).put(
 									"user_login_cache",

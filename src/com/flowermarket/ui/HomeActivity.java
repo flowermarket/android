@@ -57,6 +57,9 @@ public class HomeActivity extends BaseActivity implements OnClickListener {
 		} else if (v == map) {
 			Intent intent = new Intent(this, FlowerMapActivity.class);
 			startActivity(intent);
+		} else if (v == message) {
+			Intent intent = new Intent(this, MessageListActivity.class);
+			startActivity(intent);
 		}
 	}
 

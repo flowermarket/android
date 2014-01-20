@@ -1,5 +1,6 @@
 package com.flowermarket.commpoments;
 
+import java.util.Date;
 import java.util.List;
 
 import android.content.Context;
@@ -13,6 +14,7 @@ import android.widget.TextView;
 import com.flowermarket.FlowerMarketApplication;
 import com.flowermarket.R;
 import com.flowermarket.entitys.Message;
+import com.flowermarket.utils.Tools;
 
 public class MessageAdapter extends BaseAdapter {
 
@@ -26,6 +28,20 @@ public class MessageAdapter extends BaseAdapter {
 	public void setData(List<Message> data) {
 		this.data = data;
 		notifyDataSetChanged();
+	}
+
+	public void appendData(Message msg) {
+		if (this.data != null) {
+			this.data.add(msg);
+			notifyDataSetChanged();
+		}
+	}
+
+	public void appendData(List<Message> data) {
+		if (this.data != null) {
+			this.data.addAll(data);
+			notifyDataSetChanged();
+		}
 	}
 
 	@Override
@@ -74,12 +90,14 @@ public class MessageAdapter extends BaseAdapter {
 				holder.himBar.setVisibility(View.GONE);
 				holder.meBar.setVisibility(View.VISIBLE);
 				holder.meMsg.setText(msg.message);
-				holder.meTime.setText(msg.time);
+				holder.meTime.setText(Tools.getDateTimeString(new Date(Long
+						.parseLong(msg.time))));
 			} else {
 				holder.himBar.setVisibility(View.VISIBLE);
 				holder.meBar.setVisibility(View.GONE);
 				holder.himMsg.setText(msg.message);
-				holder.himTime.setText(msg.time);
+				holder.himTime.setText(Tools.getDateTimeString(new Date(Long
+						.parseLong(msg.time))));
 			}
 		}
 

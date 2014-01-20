@@ -1,12 +1,11 @@
 package com.flowermarket;
 
-import com.flowermarket.ui.HomeActivity;
-import com.flowermarket.ui.LoginActivity;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
+
+import com.flowermarket.ui.LoginActivity;
 
 public class MainActivity extends Activity {
 
@@ -14,7 +13,7 @@ public class MainActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-		Intent intent = new Intent(this, HomeActivity.class);
+		Intent intent = new Intent(this, LoginActivity.class);
 		startActivity(intent);
 		finish();
 	}

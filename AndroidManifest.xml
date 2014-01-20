@@ -75,6 +75,7 @@
             android:name=".ui.FlowerMapActivity"
             android:screenOrientation="portrait" >
         </activity>
+        <service android:name=".services.MessageServices"></service>
     </application>
 
 </manifest>

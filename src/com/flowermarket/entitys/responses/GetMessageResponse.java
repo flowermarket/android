@@ -12,6 +12,7 @@ import com.flowermarket.http.base.HttpResponseEntity;
  * @author Wind
  * 
  */
+@SuppressWarnings("serial")
 public class GetMessageResponse extends HttpResponseEntity {
 
 	public List<Message> data;

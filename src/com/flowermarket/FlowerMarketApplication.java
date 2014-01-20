@@ -1,8 +1,10 @@
 package com.flowermarket;
 
 import android.app.Application;
+import android.content.Intent;
 
 import com.flowermarket.entitys.User;
+import com.flowermarket.services.MessageServices;
 
 public class FlowerMarketApplication extends Application {
 
@@ -13,9 +15,6 @@ public class FlowerMarketApplication extends Application {
 	@Override
 	public void onCreate() {
 		super.onCreate();
-		user = new User();
-		user.uid = "130";
-		user.userName = "哈哈哈";
 	}
 
 }
