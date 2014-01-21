@@ -1,5 +1,7 @@
 package com.flowermarket.ui;
 
+import java.util.List;
+
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -18,10 +20,16 @@ import com.amap.api.maps.LocationSource;
 import com.amap.api.maps.SupportMapFragment;
 import com.amap.api.maps.model.BitmapDescriptorFactory;
 import com.amap.api.maps.model.LatLng;
-import com.amap.api.maps.model.Marker;
 import com.amap.api.maps.model.MarkerOptions;
 import com.amap.api.maps.model.MyLocationStyle;
+import com.flowermarket.FlowerMarketApplication;
 import com.flowermarket.R;
+import com.flowermarket.entitys.GooglePlot;
+import com.flowermarket.entitys.responses.PlotResponse;
+import com.flowermarket.http.HttpRequestSession;
+import com.flowermarket.http.HttpRequestSession.OnRequestCallback;
+import com.flowermarket.http.base.HttpRequestEntity;
+import com.flowermarket.http.base.HttpResponseEntity;
 import com.flowermarket.utils.AMapUtil;
 import com.flowermarket.utils.Tools;
 
@@ -30,9 +38,7 @@ public class FlowerMapActivity extends FragmentActivity implements
 
 	private AMap aMap;
 	private LocationManagerProxy mAMapLocationManager;
-	private OnLocationChangedListener mListener;
 	private AlertDialog.Builder gpsDialog;
-	private Marker currentMarker;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -41,9 +47,11 @@ public class FlowerMapActivity extends FragmentActivity implements
 
 		init();
 
+		getMapData();
 		if (!Tools.isOPenGPS(this)) {
 			showGPSDialog();
 		}
+
 	}
 
 	@Override
@@ -63,6 +71,40 @@ public class FlowerMapActivity extends FragmentActivity implements
 				setUpMap();
 			}
 		}
+	}
+
+	private void getMapData() {
+		HttpRequestEntity request = new HttpRequestEntity(
+				"android!getGooglePlot", PlotResponse.class);
+		request.addParam("uid", FlowerMarketApplication.user.uid);
+		request.addParam("uuid", FlowerMarketApplication.uuid);
+		HttpRequestSession.getInstance().requestSession(request,
+				new OnRequestCallback() {
+
+					@Override
+					public void onSuccess(HttpResponseEntity resp) {
+						List<GooglePlot> data = ((PlotResponse) resp).data;
+						if (data != null && data.size() > 0) {
+							GooglePlot plot = data.get(0);
+							focusPoint(plot.plot_lat, plot.plot_lng);
+							for (int i = 0; i < data.size(); i++) {
+								drawMarker(data.get(i));
+							}
+						}
+					}
+
+					@Override
+					public void onFailue(int statusCode,
+							HttpResponseEntity entity) {
+						if (entity != null && entity.msg != null) {
+							Toast.makeText(getApplicationContext(), entity.msg,
+									Toast.LENGTH_SHORT).show();
+						} else {
+							Toast.makeText(getApplicationContext(), "请求数据失败",
+									Toast.LENGTH_SHORT).show();
+						}
+					}
+				});
 	}
 
 	private void showGPSDialog() {
@@ -113,7 +155,6 @@ public class FlowerMapActivity extends FragmentActivity implements
 
 	@Override
 	public void activate(OnLocationChangedListener listener) {
-		mListener = listener;
 		if (mAMapLocationManager == null) {
 			mAMapLocationManager = LocationManagerProxy.getInstance(this);
 		}
@@ -124,7 +165,6 @@ public class FlowerMapActivity extends FragmentActivity implements
 
 	@Override
 	public void deactivate() {
-		mListener = null;
 	}
 
 	@Override
@@ -151,12 +191,22 @@ public class FlowerMapActivity extends FragmentActivity implements
 
 	@Override
 	public void onLocationChanged(AMapLocation location) {
-		focusCurrent(location.getLatitude(), location.getLongitude());
+		// focusCurrent(location.getLatitude(), location.getLongitude());
 	}
 
-	public void focusCurrent(double lat, double lng) {
+	public void focusPoint(double lat, double lng) {
 		LatLng point = new LatLng(lat, lng);
 		aMap.moveCamera(CameraUpdateFactory.newLatLngZoom(point, 15));
+	}
+
+	public void drawMarker(GooglePlot plot) {
+		LatLng ll = new LatLng(plot.plot_lat, plot.plot_lng);
+		MarkerOptions markerPosition = new MarkerOptions()
+				.icon(BitmapDescriptorFactory
+						.fromResource(R.drawable.icon_map_marker))
+				.draggable(true).position(ll).title(plot.ADname)
+				.snippet(plot.ADname);
+		aMap.addMarker(markerPosition);
 	}
 
 }

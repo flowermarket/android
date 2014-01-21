@@ -30,10 +30,19 @@ public class MessageAdapter extends BaseAdapter {
 		notifyDataSetChanged();
 	}
 
-	public void appendData(Message msg) {
+	public int appendData(Message msg) {
 		if (this.data != null) {
 			this.data.add(msg);
 			notifyDataSetChanged();
+			return this.data.size() - 1;
+		}
+		return -1;
+	}
+
+	public void update(int index, Message msg) {
+		if (this.data != null && this.data.size() > index) {
+			this.data.remove(index);
+			this.data.set(index, msg);
 		}
 	}
 

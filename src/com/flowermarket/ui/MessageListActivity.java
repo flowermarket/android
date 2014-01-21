@@ -1,6 +1,7 @@
 package com.flowermarket.ui;
 
 import java.util.Date;
+import java.util.List;
 
 import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
@@ -8,7 +9,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
-import android.util.Log;
+import android.provider.MediaStore;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.EditText;
@@ -35,6 +36,7 @@ public class MessageListActivity extends BaseActivity implements
 	private MessageAdapter adapter;
 	private EditText input;
 	private View sendBtn;
+	private View uploadVideo;
 
 	private ProgressDialog progress;
 
@@ -50,6 +52,8 @@ public class MessageListActivity extends BaseActivity implements
 		input = (EditText) findViewById(R.id.input);
 		sendBtn = findViewById(R.id.sendBtn);
 		sendBtn.setOnClickListener(this);
+		uploadVideo = findViewById(R.id.uploadVideo);
+		uploadVideo.setOnClickListener(this);
 
 		IntentFilter filter = new IntentFilter(MESSAGE_ACTIVITY_RECIEVE);
 		registerReceiver(receiver, filter);
@@ -88,7 +92,9 @@ public class MessageListActivity extends BaseActivity implements
 						@Override
 						public void onSuccess(HttpResponseEntity resp) {
 							progress.dismiss();
-							adapter.setData(((GetMessageResponse) resp).data);
+							List<Message> data = ((GetMessageResponse) resp).data;
+							adapter.setData(data);
+							list.smoothScrollToPosition(adapter.getCount() - 1);
 						}
 
 						@Override
@@ -111,7 +117,10 @@ public class MessageListActivity extends BaseActivity implements
 		Message message = new Message();
 		message.uid = FlowerMarketApplication.user.uid;
 		message.message = input.getText().toString().trim();
-		message.time = Tools.getDateTimeString(new Date());
+		message.time = System.currentTimeMillis() + "";
+		adapter.appendData(message);
+		list.smoothScrollToPosition(adapter.getCount() - 1);
+
 		HttpRequestEntity request = new HttpRequestEntity("android!sendMsg");
 		request.addParam("uid", FlowerMarketApplication.user.uid);
 		request.addParam("uuid", FlowerMarketApplication.uuid);
@@ -146,6 +155,14 @@ public class MessageListActivity extends BaseActivity implements
 				sendMessage();
 				input.setText("");
 			}
+		} else if (v == uploadVideo) {
+			Intent intent = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
+			intent.putExtra(MediaStore.EXTRA_VIDEO_QUALITY, 0.9);
+			// 限制时长
+			intent.putExtra(MediaStore.EXTRA_DURATION_LIMIT, 5);
+			// 限制大小
+			intent.putExtra(MediaStore.EXTRA_SIZE_LIMIT, 1024 * 1024);
+			startActivityForResult(intent, 11);
 		}
 	}
 
@@ -155,10 +172,15 @@ public class MessageListActivity extends BaseActivity implements
 		public void onReceive(Context context, Intent intent) {
 			GetMessageResponse response = (GetMessageResponse) intent
 					.getSerializableExtra("response");
-			Log.d("Test", "response:");
 			if (response != null) {
-				Log.d("Test", "response:" + response.data.size());
-				adapter.appendData(response.data);
+				List<Message> data = ((GetMessageResponse) response).data;
+				for (int i = data.size() - 1; i >= 0; i--) {
+					if (data.get(i).uid
+							.equals(FlowerMarketApplication.user.uid)) {
+						data.remove(i);
+					}
+				}
+				adapter.appendData(data);
 			}
 		}
 	};

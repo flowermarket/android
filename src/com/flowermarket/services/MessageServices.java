@@ -27,6 +27,8 @@ public class MessageServices extends Service {
 	public final static String MESSAGE_ACTION_GETMESSAGE = "getmessage";
 	public final static String MESSAGE_ACTION_REGISTACTION = "regist_action";
 
+	private HttpRequestEntity request;
+
 	@Override
 	public IBinder onBind(Intent intent) {
 		// TODO Auto-generated method stub
@@ -38,7 +40,13 @@ public class MessageServices extends Service {
 		super.onCreate();
 		IntentFilter filter = new IntentFilter();
 		filter.addAction(MESSAGE_ACTION_GETMESSAGE);
+		filter.addAction(MESSAGE_ACTION_REGISTACTION);
 		registerReceiver(receiver, filter);
+		request = new HttpRequestEntity("android!gainMsg",
+				GetMessageResponse.class);
+		request.addParam("uid", FlowerMarketApplication.user.uid);
+		request.addParam("uuid", FlowerMarketApplication.uuid);
+
 		handler.postDelayed(new Runnable() {
 
 			@Override
@@ -53,31 +61,29 @@ public class MessageServices extends Service {
 
 	private void getMessage() {
 		if (FlowerMarketApplication.user != null) {
-			HttpRequestEntity request = new HttpRequestEntity(
-					"android!gainMsg", GetMessageResponse.class);
-			request.addParam("uid", FlowerMarketApplication.user.uid);
-			request.addParam("uuid", FlowerMarketApplication.uuid);
 
-			HttpRequestSession.getInstance().requestSession(request,
-					new OnRequestCallback() {
-
-						@Override
-						public void onSuccess(HttpResponseEntity resp) {
-							response = (GetMessageResponse) resp;
-							if (targetAction != null) {
-								Intent data = new Intent(targetAction);
-								data.putExtra("response", response);
-								sendBroadcast(data);
-							}
-						}
-
-						@Override
-						public void onFailue(int statusCode,
-								HttpResponseEntity entity) {
-						}
-					});
+			HttpRequestSession.getInstance().requestSession(request, callback);
 		}
 	}
+
+	private OnRequestCallback callback = new OnRequestCallback() {
+
+		@Override
+		public void onSuccess(HttpResponseEntity resp) {
+			response = (GetMessageResponse) resp;
+			if (targetAction != null) {
+				Intent data = new Intent(targetAction);
+				data.putExtra("response", response);
+				sendBroadcast(data);
+			}
+		}
+
+		@Override
+		public void onFailue(int statusCode, HttpResponseEntity entity) {
+			// TODO Auto-generated method stub
+
+		}
+	};
 
 	@Override
 	public void onDestroy() {
